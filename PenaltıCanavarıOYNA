@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stadyum Heyecanı: 2 Kişilik Penaltı Oyunu Tanıtımı</title>
+  <style>
+    /* GENEL TASARIM VE RENKLER */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #121212;
+      color: #ffffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* NAVİGASYON (MENÜ) */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(18, 18, 18, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 20px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      border-bottom: 2px solid #2e8b57;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      color: #4caf50;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      font-size: 16px;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #4caf50;
+    }
+
+    /* KAHRAMAN BÖLÜMÜ (HERO SECTION) */
+    .hero {
+      height: 100vh;
+      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(18, 18, 18, 1)), 
+                  url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=1920') no-repeat center center/cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    .hero h1 {
+      font-size: 64px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 3px 3px 10px rgba(0,0,0,0.8);
+    }
+
+    .hero h1 span {
+      color: #4caf50;
+    }
+
+    .hero p {
+      font-size: 20px;
+      color: #ccc;
+      max-width: 600px;
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    .btn {
+      background-color: #4caf50;
+      color: white;
+      padding: 15px 40px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+      transition: transform 0.2s, background-color 0.3s, box-shadow 0.3s;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      background-color: #45a049;
+      box-shadow: 0 8px 25px rgba(76, 175, 80, 0.6);
+    }
+
+    /* İÇERİK BÖLÜMLERİ GENEL */
+    section {
+      padding: 100px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    section h2 {
+      font-size: 36px;
+      text-align: center;
+      margin-bottom: 50px;
+      text-transform: uppercase;
+      position: relative;
+    }
+
+    section h2::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background-color: #4caf50;
+      border-radius: 2px;
+    }
+
+    /* ÖZELLİKLER BÖLÜMÜ (FEATURES) */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .feature-card {
+      background: #1e1e1e;
+      padding: 40px 30px;
+      border-radius: 15px;
+      text-align: center;
+      border: 1px solid #333;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      border-color: #4caf50;
+    }
+
+    .feature-icon {
+      font-size: 45px;
+      margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+      font-size: 22px;
+      margin-bottom: 15px;
+    }
+
+    .feature-card p {
+      color: #aaa;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* OYUN ALANI BÖLÜMÜ (GAMEPLAY SECTION) */
+    #game-section {
+      background: #0d0d0d;
+      max-width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-top: 1px solid #222;
+      border-bottom: 1px solid #222;
+    }
+
+    /* OYUNUN KENDİ FRAMEWORKÜ */
+    #inner-game-container {
+      position: relative;
+      margin-top: 20px;
+    }
+
+    canvas {
+      display: block;
+      background: linear-gradient(#4caf50, #2e8b57);
+      border: 4px solid white;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+    }
+
+    #info {
+      position: absolute;
+      top: 140px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px black;
+      pointer-events: none;
+      display: none;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    #controls-hint {
+      position: absolute;
+      bottom: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #aaa;
+      font-size: 14px;
+      text-align: center;
+      width: 100%;
+    }
+
+    #team-select {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 900px;
+      height: 600px;
+      background: rgba(0, 0, 0, 0.85);
+      border: 4px solid white;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      z-index: 10;
+    }
+
+    #team-select h2 {
+      font-size: 36px;
+      margin-bottom: 40px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    #team-select h2::after { display: none; } /* Başlık çizgisini burada gizledik */
+
+    .btn-container {
+      display: flex;
+      gap: 25px;
+    }
+
+    .team-btn {
+      padding: 15px 40px;
+      font-size: 20px;
+      font-weight: bold;
+      border: 3px solid white;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .team-btn:hover { transform: scale(1.1); }
+    .gs-btn { background: linear-gradient(45deg, #a90432, #fdb913); color: white; text-shadow: 1px 1px 2px black; }
+    .fb-btn { background: linear-gradient(45deg, #002f6c, #fdb913); color: white; text-shadow: 1px 1px 2px black; }
+    .bjk-btn { background: linear-gradient(45deg, #000000, #ffffff); color: #000000; border-color: #000; background-color: #fff; }
+
+    /* SİSTEM GEREKSİNİMLERİ & BİLGİ */
+    .specs-table {
+      width: 100%;
+      max-width: 600px;
+      margin: 30px auto 0 auto;
+      border-collapse: collapse;
+      background: #1e1e1e;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .specs-table td {
+      padding: 15px 20px;
+      border-bottom: 1px solid #333;
+    }
+
+    .specs-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .specs-table td:first-child {
+      font-weight: bold;
+      color: #4caf50;
+      width: 40%;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #0a0a0a;
+      text-align: center;
+      padding: 40px 20px;
+      color: #666;
+      font-size: 14px;
+      border-top: 1px solid #222;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">⚽ STADİUM-X</div>
+    <ul class="nav-links">
+      <li><a href="#">Ana Sayfa</a></li>
+      <li><a href="#ozellikler">Özellikler</a></li>
+      <li><a href="#sistem">Sistem</a></li>
+      <li><a href="#game-section" style="color: #4caf50; font-weight: bold;">HEMEN OYNA</a></li>
+    </ul>
+  </header>
+
+  <section class="hero">
+    <h1>Aynı Klavyede <span>Derbi Heyecanı!</span></h1>
+    <p>Takımını seç, arkadaşına meydan oku! Mouse ile şutunu çek veya klavyenle kaleyi savun. Tribünlerin desteği arkanda!</p>
+    <button class="btn" onclick="location.href='#game-section'">SAHAYA İN</button>
+  </section>
+
+  <section id="ozellikler">
+    <h2>Oyun Özellikleri</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">👥</div>
+        <h3>2 Kişilik Rekabet</h3>
+        <p>Yapay zekaya karşı değil, yanındaki arkadaşına karşı oyna. Gerçek bir kaleci-şutör düellosu!</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📣</div>
+        <h3>Canlı Tribünler</h3>
+        <p>Seçtiğin takımın renklerine bürünen ve pozisyonlara göre zıplayan hareketli taraftar animasyonları.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎵</div>
+        <h3>Dinamik Sesler</h3>
+        <p>Gol olduğunda stadyumu inleten sevinç sesleri ve kaleci kurtarışlarında tok, tatmin edici efektler.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="game-section">
+    <h2>🏆 CANLI MAÇ ALANI</h2>
+    
+    <div id="inner-game-container">
+      <div id="team-select">
+        <h2>Şutörün Takımını Seç</h2>
+        <div class="btn-container">
+          <button class="team-btn gs-btn" onclick="selectTeam('GS')">Galatasaray</button>
+          <button class="team-btn fb-btn" onclick="selectTeam('FB')">Fenerbahçe</button>
+          <button class="team-btn bjk-btn" onclick="selectTeam('BJK')">Beşiktaş</button>
+        </div>
+      </div>
+
+      <div id="info">Şutör (Gol): 0 &nbsp;|&nbsp; Kaleci (Kurtarış): 0</div>
+      <canvas id="game" width="900" height="600"></canvas>  
+      <div id="controls-hint">🕹️ <b>Şutör:</b> Mouse ile Hedef Al & Tıkla | 🧤 <b>Kaleci:</b> Klavye [A] ve [D] Tuşları ile Sağa/Sola Hareket Et</div>
+    </div>
+  </section>
+
+  <section id="sistem">
+    <h2>Sistem Gereksinimleri</h2>
+    <table class="specs-table">
+      <tr>
+        <td>Platform</td>
+        <td>Web Tarayıcı (Chrome, Edge, Safari, Firefox)</td>
+      </tr>
+      <tr>
+        <td>Kontroller</td>
+        <td>Mouse (Şutör) & Klavye [A-D] (Kaleci)</td>
+      </tr>
+      <tr>
+        <td>Gerekli Güç</td>
+        <td>Tost makinesi bile çalıştırır! ⚡</td>
+      </tr>
+    </table>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 2 Kişilik Mini Futbol Oyunu. Tüm Hakları Saklıdır.</p>
+  </footer>
+
+  <script>
+    const canvas = document.getElementById("game");
+    const ctx = canvas.getContext("2d");
+    const info = document.getElementById("info");
+    const teamSelect = document.getElementById("team-select");
+
+    let strikerScore = 0;
+    let keeperScore = 0;
+
+    let goalEffect = false;
+    let saveEffect = false; 
+    let gameStarted = false;
+
+    let teamColors = { main: "blue", sub: "white" }; 
+
+    const player = {
+      x: 430,
+      y: 520,
+      width: 40,
+      height: 60,
+      kicking: false
+    };
+
+    const ball = {
+      x: canvas.width / 2,
+      y: 500,
+      radius: 15,
+      speedX: 0,
+      speedY: 0,
+      moving: false
+    };
+
+    const goal = {
+      x: 280,
+      y: 130, 
+      width: 340,
+      height: 100
+    };
+
+    const keeper = {
+      x: 420,
+      y: 200,
+      width: 60,
+      height: 50,
+      speed: 14 
+    };
+
+    const keys = {
+      a: false,
+      d: false
+    };
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key.toLowerCase() === "a") keys.a = true;
+      if (e.key.toLowerCase() === "d") keys.d = true;
+    });
+
+    window.addEventListener("keyup", (e) => {
+      if (e.key.toLowerCase() === "a") keys.a = false;
+      if (e.key.toLowerCase() === "d") keys.d = false;
+    });
+
+    let crowdOffset = 0;
+
+    function selectTeam(team) {
+      if (team === 'GS') {
+        teamColors = { main: "#a90432", sub: "#fdb913" }; 
+      } else if (team === 'FB') {
+        teamColors = { main: "#002f6c", sub: "#fdb913" }; 
+      } else if (team === 'BJK') {
+        teamColors = { main: "#000000", sub: "#ffffff" }; 
+      }
+      
+      teamSelect.style.display = "none";
+      info.style.display = "block";
+      gameStarted = true;
+    }
+
+    function updateScoreboard() {
+      info.innerHTML = `Şutör (Gol): ${strikerScore} &nbsp;|&nbsp; Kaleci (Kurtarış): ${keeperScore}`;
+    }
+
+    function playSound(type) {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+
+      if (type === 'goal') {
+        oscillator.type = "square";
+        oscillator.frequency.setValueAtTime(440, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 2);
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + 2);
+      } else if (type === 'save') {
+        oscillator.type = "sine";
+        oscillator.frequency.setValueAtTime(150, audioCtx.currentTime); 
+        gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.4);
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + 0.4);
+      }
+    }
+
+    function drawStadiumGrandstand() {
+      ctx.fillStyle = "#555555";
+      ctx.fillRect(0, 0, canvas.width, 110);
+      
+      ctx.strokeStyle = "#333333";
+      ctx.lineWidth = 2;
+      for(let h = 25; h <= 110; h += 25) {
+        ctx.beginPath();
+        ctx.moveTo(0, h);
+        ctx.lineTo(canvas.width, h);
+        ctx.stroke();
+      }
+
+      crowdOffset += 0.2;
+      let colors = [teamColors.main, teamColors.sub, "#ffffff", "#e0e0e0"];
+
+      for (let row = 0; row < 4; row++) {
+        let baseY = 20 + (row * 25);
+        for (let i = 10; i < canvas.width; i += 25) {
+          let jump = Math.sin(crowdOffset + (i * 0.05) + row) * 4; 
+          
+          ctx.beginPath();
+          ctx.arc(i, baseY + jump, 8, 0, Math.PI * 2);
+          ctx.fillStyle = colors[(Math.floor(i / 25) + row) % colors.length];
+          ctx.fill();
+        }
+      }
+
+      ctx.fillStyle = "#1e5a36";
+      ctx.fillRect(0, 110, canvas.width, 15);
+      ctx.fillStyle = "white";
+      ctx.font = "12px Arial";
+      ctx.fillText("2   K İ Ş İ L İ K   M A Ç   M O D U", 50, 122);
+      ctx.fillText("2   K İ Ş İ L İ K   M A Ç   M O D U", 680, 122);
+    }
